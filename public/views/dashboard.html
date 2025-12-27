@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="public/styles/main.css">
-    <link rel="stylesheet" type="text/css" href="public/styles/dashboard.css">
     <title>Dashboard</title>
-    <script src="public/scripts/main.js" defer></script>
-
+    <link rel="stylesheet" type="text/css" href="/public/styles/main.css">
+    <link rel="stylesheet" type="text/css" href="/public/styles/dashboard.css">
+    <script src="/public/scripts/main.js" defer></script>
 </head>
 <body>
-    <nav>
+    <nav>   
         <p>LOGO</p>
         <ul>
             <li>HOME</li>
@@ -20,21 +19,22 @@
     </nav>
 
     <div class="container">
-        <aside>LINKI</aside>
-        <main>
-            <h1>DASHBOARD</h1>
-            
-            <ul>
-                <?php foreach($cards as $key=>$value): ?> 
+    <aside>LINK</aside>
+    <main>
+        <h1>DASHBOARD</h1>
+
+        <ul>
+            <?php foreach ($cards as $key => $value): ?>
                 <li>
                     <?php echo $value['title']; ?>
-                <img src="<?= $value['imageUrlPath']; ?>">
-                </li> 
-                <?php endforeach; ?> 
-            </ul>
-        </main>
-    </div>
+                    <img src="<?= $value['imageUrlPath']; ?>">
+                </li>
+            <?php endforeach; ?>
+        </ul>
 
-    <h1>Dashboard</h1>
+    </main>
+</div>
+
+    
 </body>
 </html>
