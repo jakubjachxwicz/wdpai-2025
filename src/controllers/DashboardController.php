@@ -1,11 +1,38 @@
-<?php
+<?php  
 
 require_once 'AppController.php';
+require_once __DIR__.'/../repository/UserRepository.php';
+require_once __DIR__.'/../repository/CardsRepository.php';
 
 class DashboardController extends AppController
 {
+    private static $instance = null;
+
+    private $cardsRepository;
+
+    private function __construct() 
+    {
+        $this->cardsRepository = new CardsRepository();
+    }
+
+    private function __clone() {}
+    public function __wakeup()
+    {
+        throw new \Exception("Cannot unserialize singleton");
+    }
+
+    public static function getInstance(): self
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
     public function index(?int $id)
     {
+        // TODO wyswietli wszystkie projekty z bazy danych
         $cards = [
             [
                 'id' => 1,
@@ -44,6 +71,40 @@ class DashboardController extends AppController
             ],
         ];
 
-        return $this->render('dashboard', ['cards' => $cards]);
+        if ($id>0) {
+            $cards = [
+                [
+                    'id' => 1,
+                    'title' => 'Ace of Spades',
+                    'subtitle' => 'Legendary card',
+                    'imageUrlPath' => 'https://deckofcardsapi.com/static/img/AS.png',
+                    'href' => '/cards/ace-of-spades'
+                ],
+            ];
+        }
+
+        $userRepository = new UserRepository();
+        $users = $userRepository->getUsers();
+
+        var_dump($users);
+
+        return $this->render("dashboard", ['cards' => $cards, 'users' => $users]);
+    }
+
+    public function search()
+    {
+        $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
+        header('Content-type: application/json');
+
+        if ($contentType !== "application/json") {
+            http_response_code(405);
+            echo json_encode(["error" => "Content type must be: application/json"]);
+            return;
+        }
+
+        http_response_code(200);
+        
+        $cards = $this->cardsRepository->getCardsByTitle('heart');
+        echo json_encode($cards);
     }
 }

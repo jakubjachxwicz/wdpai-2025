@@ -11,6 +11,11 @@ body {
     flex-direction: column;
 }
 
+.messages {
+    color: red;
+    font-weight: bold;
+}
+
 h1 {
     color: blue;
 }
